@@ -60,18 +60,27 @@ function getUserConstructor() {
   // {{name}} should be the name set on each instance
   // return the constructor
 
-  var User = function User(options) {
+  // function User(options) {
+  //   this.username = options.username;
+  //   this.password = options.password;
+  //   this.email = options.email;
+  //   this['password properties'] = options['password properties'];
+  // }
+  var user = function (options) {
     this.username = options.username;
     this.password = options.password;
-    this.email = options.email;
+    this.email=options.email;
     this['password properties'] = options['password properties'];
   };
+  // user.prototype.constructor = function(options) {
+  //
+  // };
 
-  User.prototype.sayHi = function () {
+  user.prototype.sayHi = function () {
     return 'Hello, my name is ' + this.username;
   };
 
-  return User;
+  return user;
 }
 
 function addPrototypeMethod(Constructor) {
@@ -120,12 +129,12 @@ function cacheFunction(cb) {
   var arg = [];
   var result = [];
   return function(unknown) {
-    arg.push(unknown);
-    result.push(cb(unknown));
-    if( arg.indexOf(unknown) !== -1 ) {
+    if (arg.indexOf(unknown) !== -1 ) {
       return result[arg.indexOf(unknown)];
     } else {
-      return cb();
+      arg.push(unknown);
+      result.push(cb(unknown));
+      return result[result.length-1];
     }
 
   };
