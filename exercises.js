@@ -19,9 +19,7 @@ function multiplyArguments() {
 
 function invokeCallback(cb) {
   // invoke cb
-  return function() {
-    cb();
-  }
+  cb();
 }
 
 function sumArray(numbers, cb) {
@@ -62,15 +60,15 @@ function getUserConstructor() {
   // {{name}} should be the name set on each instance
   // return the constructor
 
-  function User(options) {
-    this.name = options.name;
+  var User = function User(options) {
+    this.username = options.username;
     this.password = options.password;
     this.email = options.email;
-    this["password properties"] = options["password properties"];
-  }
+    this['password properties'] = options['password properties'];
+  };
 
   User.prototype.sayHi = function () {
-    return "Hello, my name is " + this.name;
+    return 'Hello, my name is ' + this.username;
   };
 
   return User;
@@ -80,7 +78,7 @@ function addPrototypeMethod(Constructor) {
   // add a method to the constructor's prototype
   // the method should be called 'sayHi' and should return the string 'Hello World!'
   Constructor.prototype.sayHi = function() {
-    return "Hello World!";
+    return 'Hello World!';
   };
 }
 
@@ -90,7 +88,7 @@ function addReverseString() {
   // hint:
   // you will need to use 'this' inside of reverse
   String.prototype.reverse = function() {
-    var output = "";
+    var output = '';
     for(var i = (this.length-1); i >= 0; i--) {
       output += this[i];
     }
@@ -119,19 +117,17 @@ function cacheFunction(cb) {
   // if the function you return is invoked with 5 it would pass 5 to cb(5) and return 25
   // if the function you return is invoked again with 5 it will look on an object in the closure scope
   // and return 25 directly and will not invoke cb again
-  var cache = {
-    arg : [],
-    results : []
-  };
-
+  var arg = [];
+  var result = [];
   return function(unknown) {
-    cache.arg.push(unknown);
-    cache.result.push(cb(unknown));
-    if(cache.arg.indexOf(unknown) !== -1) {
-      return cache.result[cache.arg.indexOf(unknown)];
+    arg.push(unknown);
+    result.push(cb(unknown));
+    if( arg.indexOf(unknown) !== -1 ) {
+      return result[arg.indexOf(unknown)];
     } else {
-      cb(unknown);
+      return cb();
     }
+
   };
 }
 
